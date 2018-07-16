@@ -1,12 +1,18 @@
 package com.sk.quizzgame;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,6 +34,8 @@ import com.google.android.gms.ads.reward.RewardItem;
 import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 
+import static android.graphics.Color.*;
+
 public class MainActivity extends AppCompatActivity implements RewardedVideoAdListener{
     manageData data;
     TextView scoreTextView;
@@ -47,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements RewardedVideoAdLi
     private int rewardPoints = 100;
     private int combo = 0;
     private AdView mAdView;
+    Vibrator v;
 private RewardedVideoAd rewardedVideoAd;
     Handler mhanler = new Handler(Looper.getMainLooper());
     @Override
@@ -62,6 +71,7 @@ private RewardedVideoAd rewardedVideoAd;
         rewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
         rewardedVideoAd.setRewardedVideoAdListener(this);
 loadRewardVideoAd();
+        v = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
         data = (manageData) MainActivity.this.getApplication();
         heartsNum =(TextView)findViewById(R.id.textView3);
         textView = (TextView) findViewById(R.id.textView);
@@ -72,7 +82,7 @@ loadRewardVideoAd();
         btn2 = (Button) findViewById(R.id.button2);
         btn3 = (Button) findViewById(R.id.button3);
         StartAlertBox();
-heartsNum.setText( Integer.toString(data.getHearts()) + " " +heartsNum );
+        heartsNum.setText( Integer.toString(data.getHearts()) );
 
 
 
@@ -187,8 +197,14 @@ heartsNum.setText( Integer.toString(data.getHearts()) + " " +heartsNum );
             scoreTextView.setText(Integer.toString(data.getScore()));
             combo++;
         }else{
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                v.vibrate(VibrationEffect.createOneShot(200,VibrationEffect.DEFAULT_AMPLITUDE));
+            }else{
+                v.vibrate(200);
+            }
             data.setHearts(data.getHearts()-1);
-            heartsNum.setText( Integer.toString(data.getHearts()) + " " +heartsNum );
+
+            heartsNum.setText( Integer.toString(data.getHearts()));
             rewardPoints = rewardPoints - 1;
             if(data.getHearts() == 0){
                watchVideo();
@@ -233,9 +249,21 @@ heartsNum.setText( Integer.toString(data.getHearts()) + " " +heartsNum );
             Log.d("hearts",String.valueOf(data.getHearts()));
             int progress = (int) Math.floor((l * 100)/(10000));
             prog.setProgress(progress);
-            if(progress <50){
-          
+            if(Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH){
+            if(progress <50 && progress >= 20){
+
+                    prog.setProgressTintList(ColorStateList.valueOf(Color.YELLOW));
+
             }
+            if (progress <20){
+                prog.setProgressTintList(ColorStateList.valueOf(Color.RED));
+
+            }
+            if(progress >= 50){
+                prog.setProgressTintList(ColorStateList.valueOf(Color.BLUE));
+
+            }}
+
             timeR = l;
             checkHeartsStatus();
         }
@@ -243,12 +271,16 @@ heartsNum.setText( Integer.toString(data.getHearts()) + " " +heartsNum );
         @Override
         public void onFinish() {
             data.setHearts(data.getHearts()-1);
-            heartsNum.setText( Integer.toString(data.getHearts()) + " " +heartsNum );
+            heartsNum.setText( Integer.toString(data.getHearts()) );
+
            if(data.getHearts() <0){
                Intent v = new Intent(MainActivity.this,finishedActivity.class);
                startActivity(v);
                finish();
            }
+            data.setRoundV(data.getRoundV()+1);
+            data.setKeyV(0);
+            StartAlertBox();
 
         }
     }.start();
@@ -274,6 +306,8 @@ private void checkHeartsStatus(){
                 View mView = getLayoutInflater().inflate(R.layout.geography, null);
                 build.setView(mView);
                 final AlertDialog dialog = build.create();
+                dialog.setCancelable(false);
+                dialog.setCanceledOnTouchOutside(false);
                 GifView gifView = (GifView)mView.findViewById(R.id.geographyGif);
                 gifView.setVisibility(View.VISIBLE);
                 gifView.setGifResource(R.drawable.geography);
@@ -309,6 +343,8 @@ private void checkHeartsStatus(){
                 View mView = getLayoutInflater().inflate(R.layout.history, null);
                 build.setView(mView);
                 final AlertDialog dialog = build.create();
+                dialog.setCancelable(false);
+                dialog.setCanceledOnTouchOutside(false);
                 GifView gifView = (GifView)mView.findViewById(R.id.HistoryGif);
                 gifView.setVisibility(View.VISIBLE);
                 gifView.setGifResource(R.drawable.history);
@@ -344,6 +380,8 @@ private void checkHeartsStatus(){
                 View mView = getLayoutInflater().inflate(R.layout.sport, null);
                 build.setView(mView);
                 final AlertDialog dialog = build.create();
+                dialog.setCancelable(false);
+                dialog.setCanceledOnTouchOutside(false);
                 GifView gifView = (GifView)mView.findViewById(R.id.sportGif);
                 gifView.setVisibility(View.VISIBLE);
                 gifView.setGifResource(R.drawable.sport);
@@ -380,6 +418,8 @@ private void checkHeartsStatus(){
                 View mView = getLayoutInflater().inflate(R.layout.science, null);
                 build.setView(mView);
                 final AlertDialog dialog = build.create();
+                dialog.setCancelable(false);
+                dialog.setCanceledOnTouchOutside(false);
                 GifView gifView = (GifView)mView.findViewById(R.id.scienceGif);
                 gifView.setVisibility(View.VISIBLE);
                 gifView.setGifResource(R.drawable.science);
@@ -415,6 +455,8 @@ private void checkHeartsStatus(){
                 View mView = getLayoutInflater().inflate(R.layout.math, null);
                 build.setView(mView);
                 final AlertDialog dialog = build.create();
+                dialog.setCancelable(false);
+                dialog.setCanceledOnTouchOutside(false);
                 GifView gifView = (GifView)mView.findViewById(R.id.mathGif);
                 gifView.setVisibility(View.VISIBLE);
                 gifView.setGifResource(R.drawable.math);
@@ -449,6 +491,8 @@ private void checkHeartsStatus(){
                 View mView = getLayoutInflater().inflate(R.layout.music, null);
                 build.setView(mView);
                 final AlertDialog dialog = build.create();
+                dialog.setCancelable(false);
+                dialog.setCanceledOnTouchOutside(false);
                 GifView gifView = (GifView)mView.findViewById(R.id.musicGif);
                 gifView.setVisibility(View.VISIBLE);
                 gifView.setGifResource(R.drawable.music);
@@ -483,6 +527,8 @@ private void checkHeartsStatus(){
                 View mView = getLayoutInflater().inflate(R.layout.games, null);
                 build.setView(mView);
                 final AlertDialog dialog = build.create();
+                dialog.setCancelable(false);
+                dialog.setCanceledOnTouchOutside(false);
                 GifView gifView = (GifView)mView.findViewById(R.id.gamesGif);
                 gifView.setVisibility(View.VISIBLE);
                 gifView.setGifResource(R.drawable.games);
@@ -517,6 +563,8 @@ private void checkHeartsStatus(){
                 View mView = getLayoutInflater().inflate(R.layout.movies, null);
                 build.setView(mView);
                 final AlertDialog dialog = build.create();
+                dialog.setCancelable(false);
+                dialog.setCanceledOnTouchOutside(false);
                 GifView gifView = (GifView)mView.findViewById(R.id.moviesGif);
                 gifView.setVisibility(View.VISIBLE);
                 gifView.setGifResource(R.drawable.movie);
@@ -595,7 +643,7 @@ countDownTimer.cancel();
     public void onRewarded(RewardItem rewardItem) {
         data.setHearts(data.getHearts()+2);
         StartCounting();
-
+heartsNum.setText(data.getHearts());
         dialog1.cancel();
     }
 
