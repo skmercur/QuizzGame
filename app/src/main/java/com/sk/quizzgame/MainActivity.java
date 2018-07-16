@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.cunoraz.gifview.library.GifView;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.reward.RewardItem;
 import com.google.android.gms.ads.reward.RewardedVideoAd;
@@ -38,22 +39,31 @@ public class MainActivity extends AppCompatActivity implements RewardedVideoAdLi
     ImageView img;
     ProgressBar prog;
     TextView textView;
+    TextView heartsNum;
     private AlertDialog dialog1;
     int kk;
     Runnable r;
     long timeR =0;
     private int rewardPoints = 100;
     private int combo = 0;
+    private AdView mAdView;
 private RewardedVideoAd rewardedVideoAd;
     Handler mhanler = new Handler(Looper.getMainLooper());
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        MobileAds.initialize(this,
+                "ca-app-pub-3940256099942544/6300978111");
+
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
         rewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
         rewardedVideoAd.setRewardedVideoAdListener(this);
 loadRewardVideoAd();
         data = (manageData) MainActivity.this.getApplication();
+        heartsNum =(TextView)findViewById(R.id.textView3);
         textView = (TextView) findViewById(R.id.textView);
         prog = (ProgressBar) findViewById(R.id.progressBar);
         img = (ImageView) findViewById(R.id.imageView);
@@ -62,7 +72,7 @@ loadRewardVideoAd();
         btn2 = (Button) findViewById(R.id.button2);
         btn3 = (Button) findViewById(R.id.button3);
         StartAlertBox();
-
+heartsNum.setText( Integer.toString(data.getHearts()) + " " +heartsNum );
 
 
 
@@ -178,6 +188,7 @@ loadRewardVideoAd();
             combo++;
         }else{
             data.setHearts(data.getHearts()-1);
+            heartsNum.setText( Integer.toString(data.getHearts()) + " " +heartsNum );
             rewardPoints = rewardPoints - 1;
             if(data.getHearts() == 0){
                watchVideo();
@@ -232,6 +243,7 @@ loadRewardVideoAd();
         @Override
         public void onFinish() {
             data.setHearts(data.getHearts()-1);
+            heartsNum.setText( Integer.toString(data.getHearts()) + " " +heartsNum );
            if(data.getHearts() <0){
                Intent v = new Intent(MainActivity.this,finishedActivity.class);
                startActivity(v);

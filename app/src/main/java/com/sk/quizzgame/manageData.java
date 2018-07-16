@@ -8,7 +8,7 @@ public class manageData extends Application {
 
     private ArrayList<String> Questions = new ArrayList<String>();
     private int keyV = 0;
-    private  int hearts = 3;
+    private  int hearts = 5;
             private int roundV = 0;
             private int score = 0;
 
