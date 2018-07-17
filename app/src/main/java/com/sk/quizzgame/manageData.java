@@ -49,35 +49,35 @@ public class manageData extends Application {
         String dataE = null;
         switch (round) {
             case 0: {
-                String[] data = {"Who's flag is this ?", "What is the capital of bolivia ?","Which mountain is known as Killer mountain ?","What is the population of china in 2018 ?","Where this place is located ?"};
+                String[] data = {"Who's flag is this ?", "What is the capital of bolivia ?","Which mountain is known as Killer mountain ?","What is the population of china in 2018 ?","Where this place is located ?","Where this place is located ?","Which of these countries doesn't belong to the EU ?","turkey belongs to which continent ?","Who's flag is this ?","What is the population of india in 2017 ?"};
                 return dataE = data[key];
             }
             case 1:{
-                String[] data = {"When the first world war started ? ", "When Algeria gained its independence from France ?","When queen Elizabeth II became queen ?","Who is this man ? ","Which of these countries never been in a war ?"};
+                String[] data = {"When the first world war started ? ", "When Algeria gained its independence from France ?","When queen Elizabeth II became queen ?","Who is this man ? ","Which of these countries never been in a war ?","Who is this man ?","Who is this man ?","When India gained its independence from Great britain  ?","when was the suez crisis ?","When was the eiffel tower built ?"};
                 return dataE = data[key];
             }
             case 2:{
-                String[] data = {"Which of these countries won 4 world cups ?", "Who's this person ?","In wich country this sport is not practiced ?","How many Ballon d'or Cristiano Ronaldo won ?","Which of these countries won the first world cup ?"};
+                String[] data = {"Which of these countries won 4 world cups ?", "Who's this person ?","In wich country this sport is not practiced ?","How many Ballon d'or Cristiano Ronaldo won ?","Which of these countries won the first world cup ?", "Who is the formula one champion of 2017 ?","What's the name of this sport ?","How many players are in handball team ?","How many referees are in a soccer match ? ","Who won the world cup of 2002 ?"};
                 return dataE = data[key];
             }
             case 3:{
-                String[] data = {"Who is this person ?", "What is the name of this molecule ?","Who invented this formula ? E = mc² ","How do we call the splitting of a heavy nucleus ?","Which of Einstein theories was recently proven ?"};
+                String[] data = {"Who is this person ?", "What is the name of this molecule ?","Who invented this formula ? E = mc² ","How do we call the splitting of a heavy nucleus ?","Which of Einstein theories was recently proven ?","Who is this person ?","Who invented the laser ?","In which temperature the  liquid nitrogen boils ?","Which of these materials is considered  the toughest ?","Why the  glass breaks ?"};
                 return dataE = data[key];
             }
             case 4:{
-                String[] data = {"6x9 = ", "Solve this equation ","This integral equales to : ", "This cosin can be written in another form which one of these forms is the correct ?","What is this theorem  called ?"};
+                String[] data = {"6x9 = ", "Solve this equation ","This integral equales to : ", "This cosin can be written in another form which one of these forms is the correct ?","What is this theorem  called ?","sqrt(90) = ","9x9 = ","sin(pi/2) = ","1879+38 = "," 9^0 = "};
                 return dataE = data[key];
             }
             case 5:{
-                String[] data = {"Who is this person ?", "How many albums did Iron Maiden make ?","Why did oasis split up ?","Whats the name of this groupe ?","Whats the name of this singer ?"};
+                String[] data = {"Who is this person ?", "How many albums did Iron Maiden make ?","Why did oasis split up ?","Whats the name of this groupe ?","Whats the name of this singer ?","Who is this person ?","Which band has a pilot who is the singer of the band ?","Who is this person ?","How many albums did Will Smith make ?","Which of these band is not from UK ?"};
                 return dataE = data[key];
             }
             case 6:{
-                String[] data = {"When was the first video game invented ?", "What's the name of this company ?","What kind of game is this one ?","What's the name of this console ?","Who is the highest paid E-Sport player in 2017 ?"};
+                String[] data = {"When was the first video game invented ?", "What's the name of this company ?","What kind of game is this one ?","What's the name of this console ?","Who is the highest paid E-Sport player in 2017 ?","Who created Mario ?","Who created counter strike ?","Which of these games was sold over 90 million copies ?","Which of these games isn't an open world game ?","Whats the name of this brand ?"};
                 return dataE = data[key];
             }
             case 7:{
-                String[] data = {"Who is this actor ?", "Which of these actors lost a lot of weight for a role in a movie ?","Who is this actress ?","Wich of these movies his cost of production was over 300 million USD ? ","What is the most watched tv show in 2017 ?"};
+                String[] data = {"Who is this actor ?", "Which of these actors lost a lot of weight for a role in a movie ?","Who is this actress ?","Wich of these movies his cost of production was over 300 million USD ? ","What is the most watched tv show in 2017 ?","Who is the creator of naruto ?","Whats the name of this anime ?","What's the name of this horror movie ?","What's the name of this movie ?","What's the name of this actor ?"};
                 return dataE = data[key];
             }
             case 8:{
