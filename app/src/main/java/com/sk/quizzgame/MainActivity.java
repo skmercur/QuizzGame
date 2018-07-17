@@ -34,6 +34,9 @@ import com.google.android.gms.ads.reward.RewardItem;
 import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 import static android.graphics.Color.*;
 
 public class MainActivity extends AppCompatActivity implements RewardedVideoAdListener{
@@ -48,13 +51,17 @@ public class MainActivity extends AppCompatActivity implements RewardedVideoAdLi
     ProgressBar prog;
     TextView textView;
     TextView heartsNum;
+    Random rand = new Random();
     private AlertDialog dialog1;
     int kk;
     Runnable r;
     long timeR =0;
+    private    int randNum;
     private int rewardPoints = 100;
     private int combo = 0;
+    private  int previous = 0;
     private AdView mAdView;
+    private ArrayList<Integer> UniqueR = new ArrayList<Integer>();
     Vibrator v;
 private RewardedVideoAd rewardedVideoAd;
     Handler mhanler = new Handler(Looper.getMainLooper());
@@ -83,8 +90,11 @@ loadRewardVideoAd();
         btn3 = (Button) findViewById(R.id.button3);
         StartAlertBox();
         heartsNum.setText( Integer.toString(data.getHearts()) );
+randNum = 0;
 
-
+        final ArrayList<Integer> btn1R = new ArrayList<Integer>();
+        ArrayList<Integer> btn2R = new ArrayList<Integer>();
+        ArrayList<Integer> btn3R = new ArrayList<Integer>();
 
 
 
@@ -93,7 +103,10 @@ loadRewardVideoAd();
             @Override
             public void onClick(View view) {
 
-                checkAnswer(data.getKeyV(), data.getRoundV(), 0);
+                checkAnswer(randNum, data.getRoundV(), 0);
+              randNum = rand.nextInt(5);
+              randNum = UniqueRand(randNum);
+
                 if (data.getKeyV() == 4) {
 
                     data.setKeyV(0);
@@ -105,15 +118,15 @@ loadRewardVideoAd();
                 } else {
                     data.setKeyV(data.getKeyV() + 1);
                 }
-                textView.setText(data.QuestionsData(data.getKeyV(), data.getRoundV()));
-                btn1.setText(data.AnswerQuestion(data.getKeyV(), data.getRoundV()).get(0).toString());
-                btn2.setText(data.AnswerQuestion(data.getKeyV(), data.getRoundV()).get(1).toString());
-                btn3.setText(data.AnswerQuestion(data.getKeyV(), data.getRoundV()).get(2).toString());
-                if (data.AnswerQuestion(data.getKeyV(), data.getRoundV()).get(4).toString().matches("none")) {
+                textView.setText(data.QuestionsData(randNum, data.getRoundV()));
+                btn1.setText(data.AnswerQuestion(randNum, data.getRoundV()).get(0).toString());
+                btn2.setText(data.AnswerQuestion(randNum, data.getRoundV()).get(1).toString());
+                btn3.setText(data.AnswerQuestion(randNum, data.getRoundV()).get(2).toString());
+                if (data.AnswerQuestion(randNum, data.getRoundV()).get(4).toString().matches("none")) {
                     img.setVisibility(View.INVISIBLE);
                 } else {
                     img.setVisibility(View.VISIBLE);
-                    int DrawableResourceId = MainActivity.this.getResources().getIdentifier(data.AnswerQuestion(data.getKeyV(), data.getRoundV()).get(4).toString(), "drawable", MainActivity.this.getPackageName());
+                    int DrawableResourceId = MainActivity.this.getResources().getIdentifier(data.AnswerQuestion(randNum, data.getRoundV()).get(4).toString(), "drawable", MainActivity.this.getPackageName());
                     img.setImageResource(DrawableResourceId);
                 }
 
@@ -123,8 +136,9 @@ loadRewardVideoAd();
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                checkAnswer(data.getKeyV(), data.getRoundV(), 1);
+                checkAnswer(randNum, data.getRoundV(), 1);
+                randNum = rand.nextInt(5);
+                randNum = UniqueRand(randNum);
                 if (data.getKeyV() == 4) {
 
                     data.setKeyV(0);
@@ -136,26 +150,28 @@ loadRewardVideoAd();
                 } else {
                     data.setKeyV(data.getKeyV() + 1);
                 }
-                textView.setText(data.QuestionsData(data.getKeyV(), data.getRoundV()));
-                btn1.setText(data.AnswerQuestion(data.getKeyV(), data.getRoundV()).get(0).toString());
-                btn2.setText(data.AnswerQuestion(data.getKeyV(), data.getRoundV()).get(1).toString());
-                btn3.setText(data.AnswerQuestion(data.getKeyV(), data.getRoundV()).get(2).toString());
-                if (data.AnswerQuestion(data.getKeyV(), data.getRoundV()).get(4).toString().matches("none")) {
+                textView.setText(data.QuestionsData(randNum, data.getRoundV()));
+                btn1.setText(data.AnswerQuestion(randNum, data.getRoundV()).get(0).toString());
+                btn2.setText(data.AnswerQuestion(randNum, data.getRoundV()).get(1).toString());
+                btn3.setText(data.AnswerQuestion(randNum, data.getRoundV()).get(2).toString());
+                if (data.AnswerQuestion(randNum, data.getRoundV()).get(4).toString().matches("none")) {
                     img.setVisibility(View.INVISIBLE);
                 } else {
                     img.setVisibility(View.VISIBLE);
-                    int DrawableResourceId = MainActivity.this.getResources().getIdentifier(data.AnswerQuestion(data.getKeyV(), data.getRoundV()).get(4).toString(), "drawable", MainActivity.this.getPackageName());
+                    int DrawableResourceId = MainActivity.this.getResources().getIdentifier(data.AnswerQuestion(randNum, data.getRoundV()).get(4).toString(), "drawable", MainActivity.this.getPackageName());
                     img.setImageResource(DrawableResourceId);
                 }
+
 
             }
         });
         btn3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
-                checkAnswer(data.getKeyV(), data.getRoundV(), 2);
+                checkAnswer(randNum, data.getRoundV(), 2);
+                randNum = rand.nextInt(5);
+                randNum = rand.nextInt(5);
+                randNum = UniqueRand(randNum);
                 if (data.getKeyV() == 4) {
 
                     data.setKeyV(0);
@@ -167,17 +183,18 @@ loadRewardVideoAd();
                 } else {
                     data.setKeyV(data.getKeyV() + 1);
                 }
-                textView.setText(data.QuestionsData(data.getKeyV(), data.getRoundV()));
-                btn1.setText(data.AnswerQuestion(data.getKeyV(), data.getRoundV()).get(0).toString());
-                btn2.setText(data.AnswerQuestion(data.getKeyV(), data.getRoundV()).get(1).toString());
-                btn3.setText(data.AnswerQuestion(data.getKeyV(), data.getRoundV()).get(2).toString());
-                if (data.AnswerQuestion(data.getKeyV(), data.getRoundV()).get(4).toString().matches("none")) {
+                textView.setText(data.QuestionsData(randNum, data.getRoundV()));
+                btn1.setText(data.AnswerQuestion(randNum, data.getRoundV()).get(0).toString());
+                btn2.setText(data.AnswerQuestion(randNum, data.getRoundV()).get(1).toString());
+                btn3.setText(data.AnswerQuestion(randNum, data.getRoundV()).get(2).toString());
+                if (data.AnswerQuestion(randNum, data.getRoundV()).get(4).toString().matches("none")) {
                     img.setVisibility(View.INVISIBLE);
                 } else {
                     img.setVisibility(View.VISIBLE);
-                    int DrawableResourceId = MainActivity.this.getResources().getIdentifier(data.AnswerQuestion(data.getKeyV(), data.getRoundV()).get(4).toString(), "drawable", MainActivity.this.getPackageName());
+                    int DrawableResourceId = MainActivity.this.getResources().getIdentifier(data.AnswerQuestion(randNum, data.getRoundV()).get(4).toString(), "drawable", MainActivity.this.getPackageName());
                     img.setImageResource(DrawableResourceId);
                 }
+
 
             }
         });
@@ -185,7 +202,23 @@ loadRewardVideoAd();
 
 
     }
-
+private int UniqueRand( int randNumero){
+        int k = 0;
+      if(UniqueR.size() <5){
+          if (UniqueR.contains(randNumero)){
+              randNumero = rand.nextInt(5);
+              UniqueRand(randNumero);
+          }else{
+              k = randNumero;
+              UniqueR.add(k);
+              return k;
+          }
+      }else{
+          UniqueR.clear();
+          UniqueRand(0);
+      }
+      return k;
+}
     private void checkAnswer(int key, int round, int answer) {
         int correct = Integer.parseInt(data.AnswerQuestion(key, round).get(3).toString());
         if(combo == 4){
@@ -194,7 +227,7 @@ loadRewardVideoAd();
         }
         if (answer == correct) {
             data.setScore(data.getScore() + rewardPoints);
-            scoreTextView.setText(Integer.toString(data.getScore()));
+            scoreTextView.setText("Score: "+Integer.toString(data.getScore()));
             combo++;
         }else{
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -643,7 +676,7 @@ countDownTimer.cancel();
     public void onRewarded(RewardItem rewardItem) {
         data.setHearts(data.getHearts()+2);
         StartCounting();
-heartsNum.setText(data.getHearts());
+heartsNum.setText(Integer.toString(data.getHearts()));
         dialog1.cancel();
     }
 
