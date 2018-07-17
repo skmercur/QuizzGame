@@ -7,6 +7,7 @@ import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements RewardedVideoAdLi
     private int combo = 0;
     private  int previous = 0;
     private AdView mAdView;
+    MediaPlayer mp;
     private ArrayList<Integer> UniqueR = new ArrayList<Integer>();
     Vibrator v;
 private RewardedVideoAd rewardedVideoAd;
@@ -78,6 +80,7 @@ private RewardedVideoAd rewardedVideoAd;
         rewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
         rewardedVideoAd.setRewardedVideoAdListener(this);
 loadRewardVideoAd();
+        mp = MediaPlayer.create(MainActivity.this, R.raw.sucess);
         v = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
         data = (manageData) MainActivity.this.getApplication();
         heartsNum =(TextView)findViewById(R.id.textView3);
@@ -227,6 +230,7 @@ private int UniqueRand( int randNumero){
         }
         if (answer == correct) {
             data.setScore(data.getScore() + rewardPoints);
+            mp.start();
             scoreTextView.setText("Score: "+Integer.toString(data.getScore()));
             combo++;
         }else{
